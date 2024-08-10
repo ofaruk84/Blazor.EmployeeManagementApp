@@ -16,6 +16,7 @@ builder.Services.AddDbContext<AppDBContext>(options =>
         throw new InvalidOperationException("DB Connection not found!"));
 });
 
+builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 
 var app = builder.Build();
 
