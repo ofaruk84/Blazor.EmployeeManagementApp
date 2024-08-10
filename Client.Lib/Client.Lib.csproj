@@ -10,4 +10,9 @@
     <ProjectReference Include="..\Shared.Lib\Shared.Lib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Concrete\" />
+    <Folder Include="Services\Abstract\" />
+  </ItemGroup>
+
 </Project>
