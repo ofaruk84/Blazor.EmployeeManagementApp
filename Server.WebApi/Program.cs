@@ -1,5 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Server.Business.Abstract;
+using Server.Business.Concrete;
+using Server.DataAccess.Abstract;
+using Server.DataAccess.Concrete.EntityFramework;
 using Server.DataAccess.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +21,17 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 });
 
 builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("TokenOptions"));
+
+//Data Object Layer
+builder.Services.AddScoped<IUserDal, EfUserDal>();
+builder.Services.AddScoped<ISystemRoleDal, EfSystemRoleDal>();
+builder.Services.AddScoped<IUserRoleDal, EfUserRoleDal>();
+
+//Services
+builder.Services.AddScoped<IUserService, UserManager>();
+
+
+
 
 var app = builder.Build();
 
