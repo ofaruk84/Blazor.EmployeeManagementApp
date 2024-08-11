@@ -12,5 +12,8 @@ namespace Server.DataAccess.Concrete.EntityFramework
 {
     public class EfSystemRoleDal : EfEntityRepositoryBase<SystemRole,AppDBContext>,ISystemRoleDal
     {
+        public EfSystemRoleDal(AppDBContext context) : base(context)
+        {
+        }
     }
 }

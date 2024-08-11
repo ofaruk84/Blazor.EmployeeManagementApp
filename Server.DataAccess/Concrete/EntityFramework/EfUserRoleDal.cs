@@ -12,5 +12,8 @@ namespace Server.DataAccess.Concrete.EntityFramework
 {
     public class EfUserRoleDal : EfEntityRepositoryBase<UserRole,AppDBContext>,IUserRoleDal
     {
+        public EfUserRoleDal(AppDBContext context) : base(context)
+        {
+        }
     }
 }

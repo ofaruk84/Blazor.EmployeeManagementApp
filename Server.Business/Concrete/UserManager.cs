@@ -27,7 +27,7 @@ namespace Server.Business.Concrete
         {
             if (registerDto is null) return new GeneralResponse(false, "Model is empty");
 
-            var user = _userDal.GetAsync(x => x.Email!.Equals(registerDto.Email));
+            var user = await _userDal.GetAsync(x => x.Email!.Equals(registerDto.Email));
 
             if(user is not null) return new GeneralResponse(false, "User Registered Already");
 
@@ -50,7 +50,9 @@ namespace Server.Business.Concrete
 
         private async Task AddUserRole(string email,bool isAdmin)
         {
-            var user = _userDal.GetAsync(x => x.Email!.Equals(email));
+            var user = await _userDal.GetAsync(x => x.Email!.Equals(email));
+            if (user == null) throw new Exception("User not found");
+
             var addedUserRole = new UserRole
             {
                 UserId = user.Id
