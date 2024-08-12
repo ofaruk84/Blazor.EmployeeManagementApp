@@ -1,4 +1,5 @@
 ﻿using Server.Business.Abstract;
+using Server.Business.Security.JWT;
 using Server.DataAccess.Abstract;
 using Shared.Lib.DTOs;
 using Shared.Lib.Entities;
@@ -13,13 +14,15 @@ namespace Server.Business.Concrete
         private readonly IUserDal _userDal;
         private readonly IUserRoleDal _userRoleDal;
         private readonly ISystemRoleDal _systemRoleDal;
+        private readonly JWTHandler  _jWTHandler;
 
 
-        public UserManager(IUserDal userDal, ISystemRoleDal systemRoleDal, IUserRoleDal userRoleDal)
+        public UserManager(IUserDal userDal, ISystemRoleDal systemRoleDal, IUserRoleDal userRoleDal, JWTHandler jWTHandler)
         {
             _userDal = userDal;
             _userRoleDal = userRoleDal;
             _systemRoleDal = systemRoleDal;
+            _jWTHandler = jWTHandler;
         }
 
 
@@ -27,9 +30,9 @@ namespace Server.Business.Concrete
         {
             if (registerDto is null) return new GeneralResponse(false, "Model is empty");
 
-            var user = await _userDal.GetAsync(x => x.Email!.Equals(registerDto.Email));
+            var user = await FindByEmail(registerDto.Email!);
 
-            if(user is not null) return new GeneralResponse(false, "User Registered Already");
+            if (user is not null) return new GeneralResponse(false, "User Registered Already");
 
             var applicationUser = new ApplicationUser {
                 Email = registerDto.Email,
@@ -47,7 +50,12 @@ namespace Server.Business.Concrete
             return new GeneralResponse(true, "User Created");
 
         }
+        private async Task<ApplicationUser?> FindByEmail(string email)
+        {
+            var user = await _userDal.GetAsync(x => x.Email!.Equals(email));
 
+            return user;
+        }
         private async Task AddUserRole(string email,bool isAdmin)
         {
             var user = await _userDal.GetAsync(x => x.Email!.Equals(email));
@@ -72,9 +80,27 @@ namespace Server.Business.Concrete
             await _userRoleDal.AddAsync(addedUserRole);
         }
 
-        public Task<LoginResponse> SignIn(LoginDto loginDto)
+        public async Task<LoginResponse> SignIn(LoginDto loginDto)
         {
-            throw new NotImplementedException();
+            if (loginDto is null) return new LoginResponse(false,Message:"Modal is empty");
+
+
+            var user = await FindByEmail(loginDto.Email!);
+            if (user is null) return new LoginResponse(false, Message: "UserNotFound");
+
+            var isValidPassword = BcryptHasher.VerifyPassword(loginDto.Password!,user.Password!);
+            if(!isValidPassword) return new LoginResponse(false, Message: "Email/Password not valid");
+
+            var userRole = await _userRoleDal.GetAsync(x=>x.UserId.Equals(user.Id));
+            if (userRole is null) return new LoginResponse(false, Message: "User Role Not Found");
+
+            var userRoleName = await _systemRoleDal.GetAsync(x=>x.Id == userRole.RoleId);
+
+            var token = _jWTHandler.GenerateToken(user, userRoleName!.Name!);
+            var refreshToken = _jWTHandler.GenerateRefreshToken();
+
+            return new  LoginResponse(true, Message: "User successfully logged in", token, refreshToken);
+
         }
     }
 }

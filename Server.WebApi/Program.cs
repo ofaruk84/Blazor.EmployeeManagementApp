@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.Identity;
+using Shared.Lib.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Server.Business.Abstract;
 using Server.Business.Concrete;
+using Server.Business.Security.JWT;
 using Server.DataAccess.Abstract;
 using Server.DataAccess.Concrete.EntityFramework;
 using Server.DataAccess.EntityFramework;
@@ -30,6 +31,9 @@ builder.Services.AddScoped<IUserRoleDal, EfUserRoleDal>();
 //Services
 builder.Services.AddScoped<IUserService, UserManager>();
 
+
+//utilities
+builder.Services.AddSingleton<JWTHandler>();
 
 
 

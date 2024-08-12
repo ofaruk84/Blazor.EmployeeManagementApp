@@ -18,5 +18,10 @@ namespace Shared.Lib.Utilities
 
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
+
+        public static bool VerifyPassword(string inputPassword,string userPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(inputPassword, userPassword);
+        }
     }
 }
