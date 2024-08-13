@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Server.Business.Abstract;
 using Shared.Lib.DTOs;
@@ -17,6 +18,7 @@ namespace Server.WebApi.Controllers
         }
 
         [HttpPost("register")]
+        
         public async Task<IActionResult> Register(RegisterDto user) {
 
             try
@@ -34,6 +36,7 @@ namespace Server.WebApi.Controllers
         }
 
         [HttpPost("login")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Login(LoginDto user)
         {
             try

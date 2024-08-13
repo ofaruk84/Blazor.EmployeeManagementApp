@@ -4,8 +4,8 @@ using Server.DataAccess.Abstract;
 using Shared.Lib.DTOs;
 using Shared.Lib.Entities;
 using Shared.Lib.Responses;
-using Shared.Lib.Utilities;
-
+using Server.Business.Utilities;
+using Server.Business.Security;
 
 namespace Server.Business.Concrete
 {
