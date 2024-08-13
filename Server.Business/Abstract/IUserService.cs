@@ -1,4 +1,5 @@
 ﻿using Shared.Lib.DTOs;
+using Shared.Lib.Entities;
 using Shared.Lib.Responses;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,7 @@ namespace Server.Business.Abstract
     {
         Task<GeneralResponse> CreateUser(RegisterDto registerDto);
         Task<LoginResponse> SignIn(LoginDto loginDto);
+        Task<LoginResponse> RefreshToken(AppRefreshToken refreshToken);
+
     }
 }

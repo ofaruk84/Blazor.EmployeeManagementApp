@@ -6,5 +6,6 @@ namespace Server.Business.Utilities
     {
         public static string AdminRole = "Admin";
         public static string UserRole = "User";
-    }
+        
+    };
 }
