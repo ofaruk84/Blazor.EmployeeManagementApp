@@ -53,6 +53,7 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 builder.Services.AddScoped<IUserDal, EfUserDal>();
 builder.Services.AddScoped<ISystemRoleDal, EfSystemRoleDal>();
 builder.Services.AddScoped<IUserRoleDal, EfUserRoleDal>();
+builder.Services.AddScoped<IRefreshTokenDal, EfRefreshTokenDal>();
 
 //Services
 builder.Services.AddScoped<IUserService, UserManager>();

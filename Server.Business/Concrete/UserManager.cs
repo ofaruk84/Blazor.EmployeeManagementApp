@@ -107,6 +107,12 @@ namespace Server.Business.Concrete
             var token = _jWTHandler.GenerateToken(user, userRoleName!.Name!);
             var refreshToken = _jWTHandler.GenerateRefreshToken();
 
+            await _refreshTokenDal.AddAsync(new AppRefreshToken
+            {
+                Token = refreshToken,
+                UserId = user.Id,
+            });
+
             return new  LoginResponse(true, Message: "User successfully logged in", token, refreshToken);
 
         }
@@ -131,7 +137,7 @@ namespace Server.Business.Concrete
             var user = await FindUserById(userRefreshToken.UserId);
             if (user is null) return new LoginResponse(false,Message: Messages.RefreshTokenNotFound);
 
-            var userRole = await FindUserRoleByUserId(refreshToken.UserId);
+            var userRole = await FindUserRoleByUserId(user.Id);
             if (userRole is null) return new LoginResponse(false, Message: Messages.UserNotFound);
 
             var systemRole = await FindSystemRoleByRoleId(userRole.RoleId);
