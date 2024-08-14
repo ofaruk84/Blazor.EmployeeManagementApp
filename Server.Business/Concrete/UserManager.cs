@@ -30,11 +30,11 @@ namespace Server.Business.Concrete
 
         public async Task<GeneralResponse> CreateUser(RegisterDto registerDto)
         {
-            if (registerDto is null) return new GeneralResponse(false, "Model is empty");
+            if (registerDto is null) return new GeneralResponse(false, Message:Messages.EmptyModal);
 
             var user = await FindUserByEmail(registerDto.Email!);
 
-            if (user is not null) return new GeneralResponse(false, "User Registered Already");
+            if (user is not null) return new GeneralResponse(false, Message:Messages.ExistingUser);
 
             var applicationUser = new ApplicationUser {
                 Email = registerDto.Email,
@@ -49,7 +49,7 @@ namespace Server.Business.Concrete
             await AddUserRole(registerDto.Email!, registerDto.IsAdmin);
 
 
-            return new GeneralResponse(true, "User Created");
+            return new GeneralResponse(true, Message:Messages.UserCreated);
 
         }
         private async Task<ApplicationUser?> FindUserByEmail(string email)
@@ -67,7 +67,7 @@ namespace Server.Business.Concrete
         private async Task AddUserRole(string email,bool isAdmin)
         {
             var user = await _userDal.GetAsync(x => x.Email!.Equals(email));
-            if (user == null) throw new Exception("User not found");
+            if (user == null) throw new Exception(Messages.UserNotFound);
 
             var addedUserRole = new UserRole
             {
@@ -90,17 +90,17 @@ namespace Server.Business.Concrete
 
         public async Task<LoginResponse> SignIn(LoginDto loginDto)
         {
-            if (loginDto is null) return new LoginResponse(false,Message:"Modal is empty");
+            if (loginDto is null) return new LoginResponse(false,Message:Messages.EmptyModal);
 
 
             var user = await FindUserByEmail(loginDto.Email!);
-            if (user is null) return new LoginResponse(false, Message: "UserNotFound");
+            if (user is null) return new LoginResponse(false, Message: Messages.UserNotFound);
 
             var isValidPassword = BcryptHasher.VerifyPassword(loginDto.Password!,user.Password!);
-            if(!isValidPassword) return new LoginResponse(false, Message: "Email/Password not valid");
+            if(!isValidPassword) return new LoginResponse(false, Message: Messages.InvalidCred);
 
             var userRole = await _userRoleDal.GetAsync(x=>x.UserId.Equals(user.Id));
-            if (userRole is null) return new LoginResponse(false, Message: "User Role Not Found");
+            if (userRole is null) return new LoginResponse(false, Message: Messages.UserRoleNotFound);
 
             var userRoleName = await _systemRoleDal.GetAsync(x=>x.Id == userRole.RoleId);
 
@@ -113,8 +113,7 @@ namespace Server.Business.Concrete
                 UserId = user.Id,
             });
 
-            return new  LoginResponse(true, Message: "User successfully logged in", token, refreshToken);
-
+            return new  LoginResponse(true, Message: Messages.UserLoggedIn, token, refreshToken);
         }
         private async Task<UserRole?> FindUserRoleByUserId(int userId)
         {
@@ -146,11 +145,11 @@ namespace Server.Business.Concrete
             var jwt = _jWTHandler.GenerateToken(user, systemRole!.Name!);
             var newRefreshToken = _jWTHandler.GenerateRefreshToken();
 
+            userRefreshToken.Token = newRefreshToken;
+
+            await _refreshTokenDal.UpdateAsync(userRefreshToken);
+
             return new LoginResponse(true,Message:"",jwt,newRefreshToken);
-
-
-
-
 
         }
     }
