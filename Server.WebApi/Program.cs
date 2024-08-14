@@ -20,7 +20,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("TokenOptions"));
+
 var tokenOptions = builder.Configuration.GetSection(nameof(TokenOptions)).Get<TokenOptions>();
+
+if (tokenOptions is null)
+{
+    throw new ArgumentNullException(nameof(tokenOptions));
+}
+
 
 builder.Services.AddAuthentication(x =>
 {
