@@ -1,8 +1,10 @@
 ﻿using Client.Lib.Services.Abstract;
+using Client.Lib.Utilities;
 using Client.Lib.Utilities.Http;
 using Shared.Lib.DTOs;
 using Shared.Lib.Entities;
 using Shared.Lib.Responses;
+using System.Net.Http.Json;
 
 namespace Client.Lib.Services.Concrete
 {
@@ -16,19 +18,31 @@ namespace Client.Lib.Services.Concrete
             _httpClientUtil = httpClientUtil;
         }
 
-        public Task<GeneralResponse> CreateUserAccount(RegisterDto registerDto)
+        public async Task<GeneralResponse?> CreateUserAccount(RegisterDto registerDto)
         {
-            throw new NotImplementedException();
+            var httpClient =  _httpClientUtil.CreatePublicHttpClient();
+            var result = await httpClient.PostAsJsonAsync($"{authUtl}/register",registerDto);
+            
+            if (!result.IsSuccessStatusCode) return new GeneralResponse(false, Message: Messages.ErrorOcured);
+
+            return await result.Content.ReadFromJsonAsync<GeneralResponse>();
+
+       
         }
 
-        public Task<LoginResponse> RefreshToken(AppRefreshToken refreshToken)
+        public async Task<LoginResponse?> RefreshToken(AppRefreshToken refreshToken)
         {
-            throw new NotImplementedException();
+                throw new NotImplementedException();
         }
 
-        public Task<LoginResponse> SignIn(LoginDto loginDto)
+        public async Task<LoginResponse?> SignIn(LoginDto loginDto)
         {
-            throw new NotImplementedException();
+            var httpClient = _httpClientUtil.CreatePublicHttpClient();
+            var result = await httpClient.PostAsJsonAsync($"{authUtl}/register", loginDto);
+
+            if (!result.IsSuccessStatusCode) return new LoginResponse(false, Message: Messages.ErrorOcured);
+
+            return await result.Content.ReadFromJsonAsync<LoginResponse>();
         }
     }
 }

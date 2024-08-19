@@ -69,7 +69,16 @@ builder.Services.AddScoped<IUserService, UserManager>();
 //utilities
 builder.Services.AddSingleton<JWTHandler>();
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazorWasm", 
+        builder =>builder
+        .WithOrigins("https://localhost:7267", "https://localhost:7064")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+    );
+});
 
 var app = builder.Build();
 
@@ -81,7 +90,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowBlazorWasm");
 app.UseAuthentication();
 app.UseAuthorization();
 
