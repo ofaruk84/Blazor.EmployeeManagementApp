@@ -8,3 +8,12 @@
 @using Microsoft.JSInterop
 @using Client.BlazorUI
 @using Client.BlazorUI.Layout
+
+@using Shared.Lib.DTOs
+@using Client.Lib.Utilities
+@using Client.Lib.Services.Abstract
+@using Client.Lib.Utilities.Authentication
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IUserAccountService UserAccountService
+@inject NavigationManager NavManager
