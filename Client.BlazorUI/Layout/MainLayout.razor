@@ -8,9 +8,15 @@
     <main>
         <div class="top-row px-4">
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-            <a class="btn btn-none" href="identity/account/login">Login</a>
-            <a class="btn btn-none" href="identity/account/login">Register</a>
-            <a class="btn btn-none text-danger" href="identity/account/login" onclick="HandleLogout">Logout</a>
+            <AuthorizeView>
+                <Authorized>
+                    <a class="btn btn-none text-danger" href="identity/account/login" @onclick="HandleLogout">Logout</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a class="btn btn-none" href="identity/account/login">Login</a>
+                    <a class="btn btn-none" href="identity/account/login">Register</a>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
 
         <article class="content px-4">

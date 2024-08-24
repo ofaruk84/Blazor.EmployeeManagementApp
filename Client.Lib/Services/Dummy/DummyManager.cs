@@ -13,13 +13,7 @@ namespace Client.Lib.Services.Dummy
     public class DummyManager : IDummyService
     {
         private readonly IHttpClientUtil _httpClientUtil;
-        private readonly string url = "api/weatherforecast";
-
-
-        private  readonly string[] Summaries = new[]
-{
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private readonly string url = "/WeatherForecast";
 
         public DummyManager(IHttpClientUtil httpClientUtil)
         {

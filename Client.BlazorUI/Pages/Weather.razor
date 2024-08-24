@@ -1,13 +1,15 @@
 ﻿@page "/weather"
+@using Client.Lib.Services.Dummy
 @inject HttpClient Http
-
+@inject IDummyService ForecastService
 <PageTitle>Weather</PageTitle>
 
 <h1>Weather</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+<button @onclick="HandleLoad"> Load</button>
+@if (forecasts is null)
 {
     <p><em>Loading...</em></p>
 }
@@ -37,12 +39,9 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private Shared.Lib.Entities.Dummy.WeatherForecast[]? forecasts = [];
+    private bool flag = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
-    }
 
     public class WeatherForecast
     {
@@ -53,5 +52,16 @@ else
         public string? Summary { get; set; }
 
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+
+    public async Task<Shared.Lib.Entities.Dummy.WeatherForecast[]?> GetForecast()
+    {
+        return await ForecastService.GetWeatherForecasts();
+    }
+
+    async Task HandleLoad()
+    {
+        forecasts = await GetForecast();
+        flag = true;
     }
 }
