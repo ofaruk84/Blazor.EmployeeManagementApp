@@ -1,4 +1,4 @@
-﻿@page "/idendity/account/login"
+﻿@page "/identity/account/login"
 
 <h3>LoginPage</h3>
 
@@ -9,17 +9,20 @@
             <EditForm Enhance Model="User" OnValidSubmit="HandleLogin">
 
                 <DataAnnotationsValidator/>
+
                 <ValidationSummary/>
 
                 <div class="card">
-                    <div class="card-header"></div>
+                    <div class="card-header">
+                        Login
+                    </div>
                     <div class="card-body">
                         <div class="form-group mt-3">
                             <label class="form-label">Email</label>
                             <InputText class="form-control" @bind-Value="User.Email"></InputText>
                         </div>
                         <div class="form-group mt-3">
-                            <label class="form-label">PassWord</label>
+                            <label class="form-label">Password</label>
                             <input type="password" class="form-control" @bind="User.Password"></input>
                         </div>
                         <div class="form-group mt-3">
@@ -38,7 +41,8 @@
     async Task HandleLogin()
     {
         var result = await UserAccountService.SignIn(User);
-        if (result.Flag)
+
+        if (result is not null && result.Flag)
         {
             var customAuthProvider = (CustomAuthenticationStateProvider)AuthenticationStateProvider;
 
@@ -50,5 +54,6 @@
 
             NavManager.NavigateTo("/", true);
         }
+        
     }
 }

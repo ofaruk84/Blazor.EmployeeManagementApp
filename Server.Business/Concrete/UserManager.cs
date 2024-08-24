@@ -76,12 +76,12 @@ namespace Server.Business.Concrete
 
             if (isAdmin)
             {
-                var adminRole = await _systemRoleDal.GetAsync(x => x.Name!.Equals(Constans.AdminRole));
+                var adminRole = await _systemRoleDal.GetAsync(x => x.Name!.Equals(Constants.AdminRole));
                 addedUserRole.RoleId = adminRole!.Id;
             }
             else
             {
-                var userRole = await _systemRoleDal.GetAsync(x => x.Name!.Equals(Constans.UserRole));
+                var userRole = await _systemRoleDal.GetAsync(x => x.Name!.Equals(Constants.UserRole));
                 addedUserRole.RoleId = userRole!.Id;
             }
 

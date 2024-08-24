@@ -11,7 +11,7 @@ namespace Client.Lib.Services.Concrete
     public class UserAccountService : IUserAccountService
     {
         private readonly IHttpClientUtil _httpClientUtil;
-        private readonly string authUtl = "api/authentication";
+        private readonly string authUrl = "api/Auth";
 
         public UserAccountService(IHttpClientUtil httpClientUtil)
         {
@@ -21,7 +21,7 @@ namespace Client.Lib.Services.Concrete
         public async Task<GeneralResponse?> CreateUserAccount(RegisterDto registerDto)
         {
             var httpClient =  _httpClientUtil.CreatePublicHttpClient();
-            var result = await httpClient.PostAsJsonAsync($"{authUtl}/register",registerDto);
+            var result = await httpClient.PostAsJsonAsync($"{authUrl}/register",registerDto);
             
             if (!result.IsSuccessStatusCode) return new GeneralResponse(false, Message: Messages.ErrorOcured);
 
@@ -38,7 +38,7 @@ namespace Client.Lib.Services.Concrete
         public async Task<LoginResponse?> SignIn(LoginDto loginDto)
         {
             var httpClient = _httpClientUtil.CreatePublicHttpClient();
-            var result = await httpClient.PostAsJsonAsync($"{authUtl}/register", loginDto);
+            var result = await httpClient.PostAsJsonAsync($"{authUrl}/login", loginDto);
 
             if (!result.IsSuccessStatusCode) return new LoginResponse(false, Message: Messages.ErrorOcured);
 

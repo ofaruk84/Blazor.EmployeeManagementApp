@@ -45,6 +45,7 @@ namespace Client.Lib.Utilities.Http
         public HttpClient CreatePublicHttpClient()
         {
             var httpClient = _httpClientFactory.CreateClient(Constants.systemHttpClient);
+
             httpClient.DefaultRequestHeaders.Remove(Constants.authHeader);
 
             return httpClient;

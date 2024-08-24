@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Server.Business.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,7 +72,7 @@ builder.Services.AddSingleton<JWTHandler>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowBlazorWasm", 
+    options.AddPolicy(Constants.allowBlazorWasmCorsPolicy, 
         builder =>builder
         .WithOrigins("http://localhost:5113", "https://localhost:7267")
             .AllowAnyMethod()
@@ -90,7 +91,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowBlazorWasm");
+app.UseCors(Constants.allowBlazorWasmCorsPolicy);
 app.UseAuthentication();
 app.UseAuthorization();
 
