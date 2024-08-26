@@ -7,7 +7,7 @@ namespace Client.Lib.Services.Abstract
 {
     public  interface IUserAccountService
     {
-        Task<GeneralResponse?> CreateUserAccount(RegisterDto registerDto);
+        Task<GeneralResponse?> RegisterUser(RegisterDto registerDto);
         Task<LoginResponse?> SignIn(LoginDto loginDto);
         Task<LoginResponse?> RefreshToken(AppRefreshToken refreshToken);
 

@@ -5,7 +5,6 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-6">
-
             <EditForm Enhance Model="User" OnValidSubmit="HandleLogin">
 
                 <DataAnnotationsValidator/>
@@ -23,7 +22,7 @@
                         </div>
                         <div class="form-group mt-3">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-control" @bind="User.Password"></input>
+                            <input type="password" class="form-control" @bind="User.Password">
                         </div>
                         <div class="form-group mt-3">
                             <button type="submit" class="btn btn-outline-primary float-end">Login</button>

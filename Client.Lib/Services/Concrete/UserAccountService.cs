@@ -18,7 +18,7 @@ namespace Client.Lib.Services.Concrete
             _httpClientUtil = httpClientUtil;
         }
 
-        public async Task<GeneralResponse?> CreateUserAccount(RegisterDto registerDto)
+        public async Task<GeneralResponse?> RegisterUser(RegisterDto registerDto)
         {
             var httpClient =  _httpClientUtil.CreatePublicHttpClient();
             var result = await httpClient.PostAsJsonAsync($"{authUrl}/register",registerDto);
