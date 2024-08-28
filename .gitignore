@@ -144,8 +144,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Publish Web Output
-wwwroot/
 
 # WebAssembly artifacts
 *.wasm
