@@ -31,7 +31,14 @@
                             <input type="password" class="form-control" @bind="user.ConfirmPassword"/>
                         </div>
                         <div class="form-group mt-3">
-                            <button type="submit" class="btn btn-outline-primary float-end">Login</button>
+                            @if (showLoadingSpinner)
+                            {
+                                <LooadingSpinner/>                                
+                            }
+                            else
+                            {
+                            <button type="submit" class="btn btn-outline-primary float-end">Register</button>
+                            }
                         </div>
                     </div>
                 </div>
