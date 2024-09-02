@@ -1,0 +1,18 @@
+﻿@page "/"
+
+
+@code{
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState {get;set;}
+
+    protected async override Task OnInitializedAsync()
+    {
+        var state = await AuthenticationState;
+
+
+        AuthStateHelper.CheckUserAuthentication(state, NavManager);
+
+    }
+
+}

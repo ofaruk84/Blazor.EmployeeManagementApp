@@ -34,5 +34,6 @@ builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 builder.Services.AddSyncfusionBlazor();
 builder.Services.AddScoped<SfDialogService>();
 
+builder.Services.AddScoped<DialogService>();
 
 await builder.Build().RunAsync();

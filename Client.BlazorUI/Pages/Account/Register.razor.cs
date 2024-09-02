@@ -1,4 +1,5 @@
-﻿using Client.Lib.Utilities.Authentication;
+﻿using Client.Lib.Utilities;
+using Client.Lib.Utilities.Authentication;
 using Shared.Lib.DTOs;
 
 namespace Client.BlazorUI.Pages.Account
@@ -17,8 +18,9 @@ namespace Client.BlazorUI.Pages.Account
 
             if (result is not null && result.Flag)
             {
+                await DialogService.DisplayDialog(result.Message, "Success");
                 showLoadingSpinner = false;
-                NavManager.NavigateTo("identity/account/login", true);
+                NavManager.NavigateTo(AppRoutes.Login, true);
             }
 
         }
