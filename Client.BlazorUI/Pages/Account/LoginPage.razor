@@ -1,6 +1,6 @@
 ﻿@page "/identity/account/login"
-@* @using Syncfusion.Blazor.Popups
-@inject SfDialogService DialogService *@
+@using Syncfusion.Blazor.Popups
+@inject SfDialogService DialogService 
 <h3>LoginPage</h3>
 
 <div class="container">
@@ -40,7 +40,7 @@
 
     async Task HandleLogin()
     {
-       // await DisplayDialog("hey", "Success");
+        await DisplayDialog("hey", "Success");
         var result = await UserAccountService.SignIn(User);
 
         if (result is not null && result.Flag)
@@ -58,8 +58,8 @@
 
     }
 
-    // private async Task DisplayDialog(string content,string title)
-    // {
-    //     await DialogService.AlertAsync(content, title);
-    // }
+    private async Task DisplayDialog(string content,string title)
+    {
+        await DialogService.AlertAsync(content, title);
+    }
 }
