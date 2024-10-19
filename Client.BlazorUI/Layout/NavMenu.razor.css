@@ -36,6 +36,7 @@
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
+    min-width:180px;
 }
 
     .nav-item:first-of-type {
@@ -65,6 +66,17 @@
     color: white;
 }
 
+.nav-link-top{
+    margin-top:65px;
+}
+
+.full-width{
+    width:200px
+}
+
+.sub-list{
+
+}
 @media (min-width: 641px) {
     .navbar-toggler {
         display: none;
