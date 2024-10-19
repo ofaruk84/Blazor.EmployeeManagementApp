@@ -6,3 +6,24 @@
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await CheckUserAuthentication();
+    }
+
+    private async Task CheckUserAuthentication()
+    {
+        var user = (await AuthState).User;
+
+        if (!user.Identity!.IsAuthenticated)
+        {
+            NavManager.NavigateTo("/identity/account/login");
+        }
+    }
+}

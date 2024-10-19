@@ -1,22 +1,16 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Authorization
+@using Client.BlazorUI.Pages.Authentication
+@inherits LayoutComponentBase
+
+@attribute [Authorize]
 
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
-
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-            <AuthorizeView>
-                <Authorized>
-                    <a class="btn btn-none text-danger" href="@AppRoutes.Login" @onclick="HandleLogout">Logout</a>
-                </Authorized>
-                <NotAuthorized>
-                    <a class="btn btn-none" href="@AppRoutes.Login">Login</a>
-                    <a class="btn btn-none" href="@AppRoutes.Register">Register</a>
-                </NotAuthorized>
-            </AuthorizeView>
+                <ProfileDropdown/>
         </div>
 
         <article class="content px-4">
@@ -30,7 +24,7 @@
 @code{
     async Task HandleLogout(){
         var userSession = new UserSessionDto();
-        var customAuthProvider = (CustomAuthenticationStateProvider)AuthenticationStateProvider;
+        var customAuthProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
         await customAuthProvider.UpdateAuthenticationState(userSession);
         NavManager.NavigateTo("/", true);
     }

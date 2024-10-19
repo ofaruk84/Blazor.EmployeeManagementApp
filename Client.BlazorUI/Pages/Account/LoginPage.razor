@@ -44,7 +44,7 @@
         if (result is not null && result.Flag)
         {
             await DialogService.DisplayDialog(result.Message, " Login Success");
-            var customAuthProvider = (CustomAuthenticationStateProvider)AuthenticationStateProvider;
+            var customAuthProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
 
             await customAuthProvider.UpdateAuthenticationState(
                 new UserSessionDto{

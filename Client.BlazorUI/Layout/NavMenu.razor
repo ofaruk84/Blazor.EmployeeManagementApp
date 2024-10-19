@@ -1,11 +1,55 @@
-﻿@using Microsoft.AspNetCore.Components.Authorization
+﻿@* @using Microsoft.AspNetCore.Components.Authorization
+<p>asfasfas</p>
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Hi,
+        <a class="navbar-brand" href="">
+            Hi,
 
             <AuthorizeView>
                 <Authorized>
                     @context.User.Identity!.Name;
+                    <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+                        <nav class="flex-column">
+                            <div class="nav-item px-3" style="margin-top:@DepartmentMargin">
+                                <NavLink class="nav-link p-2" href="javascript:void()" style="cursor:pointer" @onclick="ShowAdminMenu">
+                                    <div class="hstack gap-1">
+                                        <span class="bi bi-backpack4 fs-3 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                        <span>Department</span>
+                                    </div>
+                                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Department
+                                </NavLink>
+                            </div>
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> <p style="color:white;">
+                                        Home
+                                    </p>
+                                </NavLink>
+                            </div>
+                            <div class="nav-link p-2 text-white" style="margin-left: 5rem; visibility: @CssStyle">
+                                <ul class="list-group">
+                                    <li style="list-style:none" class="cusor-style">
+                                        <a class="nav-link p-2">
+                                            <div class="hstack text-wrap">
+                                                <span class="bi bi-file-medical fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                                <span class="fs-6">General</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="list-group">
+                                    <li style="list-style:none" class="cusor-style">
+                                        <a class="nav-link p-2">
+                                            <div class="hstack text-wrap">
+                                                <span class="bi bi-substack fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                                <span class="fs-6">Department</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
                 </Authorized>
                 <NotAuthorized>
                     Guest
@@ -18,25 +62,72 @@
     </div>
 </div>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    public string DepartmentMargin { get; set; } = "-3.5rem";
+    public string CssStyle { get; set; } = "hidden";
+    public bool IsHidden { get; set; } = true;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void ShowAdminMenu()
+    {
+        IsHidden = !IsHidden;
+
+        if (IsHidden)
+        {
+            DepartmentMargin = "0";
+            CssStyle = "visible";
+        }
+        else
+        {
+            DepartmentMargin = "-3.5rem";
+            CssStyle = "hidden";
+        }
+    }
+}
+ *@
+
+ <AuthorizeView>
+     <Authorized>
+        <div class="top-row ps-3 navbar navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="">TestAppBlazor</a>
+                <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
+
+        <div class=" nav-scrollable" @onclick="ToggleNavMenu">
+            <nav class="flex-column">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="counter">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="weather">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+                    </NavLink>
+                </div>
+            </nav>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div>
+     </Authorized>
+ </AuthorizeView>
+
+
 
 @code {
     private bool collapseNavMenu = true;
